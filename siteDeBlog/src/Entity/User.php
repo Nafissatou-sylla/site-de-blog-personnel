@@ -37,6 +37,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateDeNaissance = null;
 
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Role $refRole = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -141,5 +145,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->dateDeNaissance = $dateDeNaissance;
 
         return $this;
+    }
+
+    public function getRefRole(): ?Role
+    {
+        return $this->refRole;
+    }
+
+    public function setRefRole(?Role $refRole): self
+    {
+        $this->refRole = $refRole;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getRoles();
     }
 }
