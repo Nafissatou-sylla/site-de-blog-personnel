@@ -13,11 +13,12 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email')
-            ->add('roles')
+            // ->add('roles')
             ->add('password')
             ->add('nom')
             ->add('prenom')
             ->add('dateDeNaissance')
+            //on l'ajoute aprés la création de la relation ManyToOne
             ->add('refRole')
         ;
     }
