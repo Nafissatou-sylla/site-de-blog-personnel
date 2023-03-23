@@ -21,7 +21,7 @@ class RoleController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_role_new', methods: ['GET', 'POST'])]
+    #[Route('/admin/new', name: 'app_role_new', methods: ['GET', 'POST'])]
     public function new(Request $request, RoleRepository $roleRepository): Response
     {
         $role = new Role();
@@ -40,7 +40,7 @@ class RoleController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_role_show', methods: ['GET'])]
+    #[Route('/admin/{id}', name: 'app_role_show', methods: ['GET'])]
     public function show(Role $role): Response
     {
         return $this->render('role/show.html.twig', [
@@ -48,7 +48,7 @@ class RoleController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_role_edit', methods: ['GET', 'POST'])]
+    #[Route('/admin/{id}/edit', name: 'app_role_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Role $role, RoleRepository $roleRepository): Response
     {
         $form = $this->createForm(RoleType::class, $role);
@@ -66,7 +66,7 @@ class RoleController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_role_delete', methods: ['POST'])]
+    #[Route('/admin/{id}', name: 'app_role_delete', methods: ['POST'])]
     public function delete(Request $request, Role $role, RoleRepository $roleRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$role->getId(), $request->request->get('_token'))) {
