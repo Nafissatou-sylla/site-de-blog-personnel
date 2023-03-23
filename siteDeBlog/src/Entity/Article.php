@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ArticleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
@@ -21,6 +23,14 @@ class Article
 
     #[ORM\Column(length: 255)]
     private ?string $descriptions = null;
+
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Commentaire::class)]
+    private Collection $refCommentaireArticle;
+
+    public function __construct()
+    {
+        $this->refCommentaireArticle = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -59,6 +69,36 @@ class Article
     public function setDescriptions(string $descriptions): self
     {
         $this->descriptions = $descriptions;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commentaire>
+     */
+    public function getRefCommentaireArticle(): Collection
+    {
+        return $this->refCommentaireArticle;
+    }
+
+    public function addRefCommentaireArticle(Commentaire $refCommentaireArticle): self
+    {
+        if (!$this->refCommentaireArticle->contains($refCommentaireArticle)) {
+            $this->refCommentaireArticle->add($refCommentaireArticle);
+            $refCommentaireArticle->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRefCommentaireArticle(Commentaire $refCommentaireArticle): self
+    {
+        if ($this->refCommentaireArticle->removeElement($refCommentaireArticle)) {
+            // set the owning side to null (unless already changed)
+            if ($refCommentaireArticle->getArticle() === $this) {
+                $refCommentaireArticle->setArticle(null);
+            }
+        }
 
         return $this;
     }
