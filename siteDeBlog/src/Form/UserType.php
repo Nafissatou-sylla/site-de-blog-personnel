@@ -20,6 +20,7 @@ class UserType extends AbstractType
             ->add('dateDeNaissance')
             //on l'ajoute aprés la création de la relation ManyToOne
             ->add('refRole')
+            ->add('refCommentaire')
         ;
     }
 
