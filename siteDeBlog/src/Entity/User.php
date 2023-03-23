@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -40,6 +42,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Role $refRole = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Commentaire::class)]
+    private Collection $refCommentaire;
+
+    public function __construct()
+    {
+        $this->refCommentaire = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -161,6 +171,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 //to strings getRoles
     public function __toString()
     {
-        return " " . $this->getRoles();
+        return " " . $this->getRoles() . " " . $this->getRefCommentaire();;
+    }
+
+    /**
+     * @return Collection<int, Commentaire>
+     */
+    public function getRefCommentaire(): Collection
+    {
+        return $this->refCommentaire;
+    }
+
+    public function addRefCommentaire(Commentaire $refCommentaire): self
+    {
+        if (!$this->refCommentaire->contains($refCommentaire)) {
+            $this->refCommentaire->add($refCommentaire);
+            $refCommentaire->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRefCommentaire(Commentaire $refCommentaire): self
+    {
+        if ($this->refCommentaire->removeElement($refCommentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($refCommentaire->getUser() === $this) {
+                $refCommentaire->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
