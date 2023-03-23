@@ -27,6 +27,9 @@ class Article
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Commentaire::class)]
     private Collection $refCommentaireArticle;
 
+    #[ORM\ManyToOne(inversedBy: 'refArticle')]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->refCommentaireArticle = new ArrayCollection();
@@ -99,6 +102,18 @@ class Article
                 $refCommentaireArticle->setArticle(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

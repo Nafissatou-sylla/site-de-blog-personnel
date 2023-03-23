@@ -46,9 +46,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Commentaire::class)]
     private Collection $refCommentaire;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Article::class)]
+    private Collection $refArticle;
+
     public function __construct()
     {
         $this->refCommentaire = new ArrayCollection();
+        $this->refArticle = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -198,6 +202,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($refCommentaire->getUser() === $this) {
                 $refCommentaire->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Article>
+     */
+    public function getRefArticle(): Collection
+    {
+        return $this->refArticle;
+    }
+
+    public function addRefArticle(Article $refArticle): self
+    {
+        if (!$this->refArticle->contains($refArticle)) {
+            $this->refArticle->add($refArticle);
+            $refArticle->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRefArticle(Article $refArticle): self
+    {
+        if ($this->refArticle->removeElement($refArticle)) {
+            // set the owning side to null (unless already changed)
+            if ($refArticle->getUser() === $this) {
+                $refArticle->setUser(null);
             }
         }
 
