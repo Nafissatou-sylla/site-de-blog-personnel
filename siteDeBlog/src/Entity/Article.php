@@ -30,9 +30,13 @@ class Article
     #[ORM\ManyToOne(inversedBy: 'refArticle')]
     private ?User $user = null;
 
+    #[ORM\ManyToMany(targetEntity: MotsCles::class, inversedBy: 'articles')]
+    private Collection $possede;
+
     public function __construct()
     {
         $this->refCommentaireArticle = new ArrayCollection();
+        $this->possede = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -114,6 +118,30 @@ class Article
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MotsCles>
+     */
+    public function getPossede(): Collection
+    {
+        return $this->possede;
+    }
+
+    public function addPossede(MotsCles $possede): self
+    {
+        if (!$this->possede->contains($possede)) {
+            $this->possede->add($possede);
+        }
+
+        return $this;
+    }
+
+    public function removePossede(MotsCles $possede): self
+    {
+        $this->possede->removeElement($possede);
 
         return $this;
     }
