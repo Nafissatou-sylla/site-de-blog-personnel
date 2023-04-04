@@ -41,6 +41,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
+
     private ?Role $refRole = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Commentaire::class)]
@@ -175,7 +176,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 //to strings getRoles
     public function __toString()
     {
-        return " " . $this->getRoles() . " " . $this->getRefCommentaire();;
+        return " " . $this->getRoles();
     }
 
     /**
