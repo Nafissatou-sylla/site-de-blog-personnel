@@ -5,7 +5,10 @@ namespace App\Entity;
 use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
@@ -18,12 +21,6 @@ class Article
     #[ORM\Column(length: 50)]
     private ?string $titre = null;
 
-    #[ORM\Column(length: 150, nullable: true)]
-    private ?string $image = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $descriptions = null;
-
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Commentaire::class)]
     private Collection $refCommentaireArticle;
 
@@ -32,6 +29,13 @@ class Article
 
     #[ORM\ManyToMany(targetEntity: MotsCles::class, inversedBy: 'articles')]
     private Collection $possede;
+
+    
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $description = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
 
     public function __construct()
     {
@@ -56,29 +60,7 @@ class Article
         return $this;
     }
 
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): self
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
-    public function getDescriptions(): ?string
-    {
-        return $this->descriptions;
-    }
-
-    public function setDescriptions(string $descriptions): self
-    {
-        $this->descriptions = $descriptions;
-
-        return $this;
-    }
+   
 
     /**
      * @return Collection<int, Commentaire>
@@ -145,4 +127,30 @@ class Article
 
         return $this;
     }
+
+   
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
 }

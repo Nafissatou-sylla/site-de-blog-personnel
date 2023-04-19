@@ -6,6 +6,9 @@ use App\Entity\Article;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Validator\Constraints\File;
+
 
 class ArticleType extends AbstractType
 {
@@ -13,11 +16,26 @@ class ArticleType extends AbstractType
     {
         $builder
             ->add('titre')
-            ->add('image')
-            ->add('descriptions')
+            ->add('description')
             ->add('user')
-            ->add('possede')
-        ;
+            // ->add('possede')
+            ->add('photo', FileType::class, [
+                'label' => 'Choisir une image',
+                'mapped' => false,
+                'required' => false,
+
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'image/jpg',
+                        ],
+                        'mimeTypesMessage' => 'le type de l image est invalide',
+                    ])
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
