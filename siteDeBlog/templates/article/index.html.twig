@@ -11,7 +11,7 @@
                 <th>Id</th>
                 <th>Titre</th>
                 <th>Image</th>
-                <th>Descriptions</th>
+                <th>Description</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -20,8 +20,10 @@
             <tr>
                 <td>{{ article.id }}</td>
                 <td>{{ article.titre }}</td>
-                <td>{{ article.image }}</td>
-                <td>{{ article.descriptions }}</td>
+                <td>  
+                    <img src={{ asset('uploads/images/' ~ article.image) }} alt="Mon image"/>
+                </td>
+                <td>{{ article.description }}</td>
                 <td>
                     <a href="{{ path('app_article_show', {'id': article.id}) }}">show</a>
                     <a href="{{ path('app_article_edit', {'id': article.id}) }}">edit</a>
@@ -34,6 +36,5 @@
         {% endfor %}
         </tbody>
     </table>
-
     <a href="{{ path('app_article_new') }}">Create new</a>
 {% endblock %}
