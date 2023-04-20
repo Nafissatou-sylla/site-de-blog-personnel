@@ -173,11 +173,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-//to strings getRoles
-    public function __toString()
-    {
-        return " " . $this->getRoles();
-    }
 
     /**
      * @return Collection<int, Commentaire>
@@ -238,4 +233,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function __toString()
+	{
+	 	return $this->getPrenom();
+	}
 }

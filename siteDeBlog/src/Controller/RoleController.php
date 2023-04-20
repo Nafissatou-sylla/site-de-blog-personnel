@@ -21,7 +21,7 @@ class RoleController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/new', name: 'app_role_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'app_role_new', methods: ['GET', 'POST'])]
     public function new(Request $request, RoleRepository $roleRepository): Response
     {
         $role = new Role();
